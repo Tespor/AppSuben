@@ -27,19 +27,19 @@ class _PantallaInicioState extends State<PantallaInicio> with WidgetsBindingObse
           child: MainMap()
           ),
         //Boton del menu
-        Positioned(
-          top: 35,
-          left: 15,
-          child: FloatingActionButton(
-            mini: true,
-            onPressed: () => null,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(60),
-            ),
-            backgroundColor: Colors.white,
-            child: Icon(Icons.menu, color: Colors.blue, size: 30),
-          ),
-        ),
+        // Positioned(
+        //   top: 35,
+        //   left: 15,
+        //   child: FloatingActionButton(
+        //     mini: true,
+        //     onPressed: () => null,
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(60),
+        //     ),
+        //     backgroundColor: Colors.white,
+        //     child: Icon(Icons.menu, color: Colors.blue, size: 30),
+        //   ),
+        // ),
         Positioned.fill(
           child: DraggableScrollableSheet(
             initialChildSize: 0.3,

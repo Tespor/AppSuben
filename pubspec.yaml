@@ -30,9 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.6
-  mapbox_maps_flutter: ^2.0.0
-  
+  mapbox_maps_flutter: ^2.11.0
+  http: ^1.1.0
   geolocator: ^10.0.0
   permission_handler: ^11.0.0
   provider: ^6.1.5
@@ -58,6 +57,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/icons/
+    - assets/img/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
