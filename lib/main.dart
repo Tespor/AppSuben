@@ -6,6 +6,7 @@ import 'package:practica/config.dart';
 import 'package:practica/screens/pantalla_inicio.dart';
 import 'package:flutter/services.dart';
 import 'package:practica/utils/map.dart';
+import 'package:practica/utils/map2.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home: Scaffold(body: MainMap()),
+      home: Scaffold(body: MainMap2()),
     );
   }
 }
@@ -72,17 +73,18 @@ class _WidgetBodyState extends State<WidgetBody> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.white,
-                  Colors.cyan
+                  const Color.fromARGB(10, 255, 255, 255),
+                  const Color.fromARGB(255, 0, 134, 212)
                 ],
                 stops: [
-                  0.5,
+                  0.2,
                   1
                 ]
                 ),
               image: DecorationImage(
-                image: AssetImage('assets/img/BgMenu2.jpg'),
-                fit: BoxFit.cover
+                image: AssetImage('assets/img/BgMenu.png'),
+                fit: BoxFit.cover,
+                opacity: 0.4
                 )  
             ),
             child: IgnorePointer(
@@ -97,40 +99,50 @@ class _WidgetBodyState extends State<WidgetBody> {
                       color: Colors.transparent,
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              //Icono user
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white70,
+                          // 🔹 Cabecera con icono + logo centrado
+                          SizedBox(
+                            height: 80, // ajusta según el tamaño del logo
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Icono de usuario (alineado a la izquierda)
+                                Positioned(
+                                  left: 16,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Color.fromARGB(255, 10, 172, 228),
+                                        width: 2,
+                                      )
+                                    ),
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: Colors.black54,
+                                      size: 32,
+                                    ),
+                                  ),
                                 ),
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.black54,
-                                  size: 28,
-                                ),
-                              ),
-                  
-                              //Logo mamalon
-                              Flexible(
-                                child: Container(
-                                  padding: EdgeInsets.only(right: 12),
+
+                                // Logo centrado
+                                Center(
                                   child: Image.asset(
-                                    'assets/img/LogoTextMaxBlanco.png',
+                                    'assets/img/LogoTextMax.png',
                                     height: 50,
                                     fit: BoxFit.contain,
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          Expanded(child: ListaRutas()),
+
+                          // 🔹 Lista de rutas
+                          const Expanded(child: ListaRutas()),
                         ],
                       )
+
                       )
                   ),
                 ),

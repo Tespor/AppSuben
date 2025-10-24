@@ -53,7 +53,7 @@ class MenuBtn extends StatelessWidget {
                   onMenuToggle();
                 },
                 child: Container(
-                  height: 55,
+                  height: 45,
                   margin: const EdgeInsets.only(left: 18, top: 18),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,

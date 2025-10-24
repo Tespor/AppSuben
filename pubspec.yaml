@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   mapbox_maps_flutter: ^2.11.0
+  flutter_mapbox_navigation:
+
   http: ^1.1.0
   geolocator: ^10.0.0
   permission_handler: ^11.0.0
