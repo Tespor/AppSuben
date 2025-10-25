@@ -3,24 +3,36 @@ import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:practica/components/btn_menu.dart';
 import 'package:practica/components/lista_rutas.dart';
 import 'package:practica/config.dart';
+import 'package:practica/provider/map_state.dart';
 import 'package:practica/screens/pantalla_inicio.dart';
 import 'package:flutter/services.dart';
 import 'package:practica/utils/map.dart';
 import 'package:practica/utils/map2.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // Configurar StatusBar transparente y texto oscuro o claro
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // transparente
-    statusBarIconBrightness: Brightness.dark, // íconos oscuros
-    statusBarBrightness: Brightness.light, // para iOS
-    systemNavigationBarColor: Colors.transparent, // barra de navegación (si quieres)
-    systemNavigationBarIconBrightness: Brightness.dark,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // transparente
+      statusBarIconBrightness: Brightness.dark, // íconos oscuros
+      statusBarBrightness: Brightness.light, // para iOS
+      systemNavigationBarColor:
+          Colors.transparent, // barra de navegación (si quieres)
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
 
   MapboxOptions.setAccessToken(AppConfig.mapboxAccessToken);
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => MapState()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +43,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home: Scaffold(body: MainMap2()),
+      home: Scaffold(body: WidgetBody()),
     );
   }
 }
@@ -66,89 +78,87 @@ class _WidgetBodyState extends State<WidgetBody> {
     return Stack(
       children: [
         //Fondo Menu
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color.fromARGB(10, 255, 255, 255),
-                  const Color.fromARGB(255, 0, 134, 212)
-                ],
-                stops: [
-                  0.2,
-                  1
-                ]
-                ),
-              image: DecorationImage(
-                image: AssetImage('assets/img/BgMenu.png'),
-                fit: BoxFit.cover,
-                opacity: 0.4
-                )  
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                const Color.fromARGB(10, 255, 255, 255),
+                const Color.fromARGB(255, 0, 134, 212),
+              ],
+              stops: [0.2, 1],
             ),
-            child: IgnorePointer(
-              ignoring: estadoMenu == false,
-              child: SafeArea(
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 14),
-                    width: AppConfig.medidaMenu + 25,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Column(
-                        children: [
-                          // 🔹 Cabecera con icono + logo centrado
-                          SizedBox(
-                            height: 80, // ajusta según el tamaño del logo
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                // Icono de usuario (alineado a la izquierda)
-                                Positioned(
-                                  left: 16,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: Color.fromARGB(255, 10, 172, 228),
-                                        width: 2,
-                                      )
-                                    ),
-                                    child: const Icon(
-                                      Icons.person,
-                                      color: Colors.black54,
-                                      size: 32,
-                                    ),
-                                  ),
-                                ),
-
-                                // Logo centrado
-                                Center(
-                                  child: Image.asset(
-                                    'assets/img/LogoTextMax.png',
-                                    height: 50,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          // 🔹 Lista de rutas
-                          const Expanded(child: ListaRutas()),
-                        ],
-                      )
-
-                      )
-                  ),
-                ),
-              )
+            image: DecorationImage(
+              image: AssetImage('assets/img/BgMenu.png'),
+              fit: BoxFit.cover,
+              opacity: 0.4,
             ),
           ),
+          child: IgnorePointer(
+            ignoring: estadoMenu == false,
+            child: SafeArea(
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  margin: EdgeInsets.only(top: 14),
+                  width: AppConfig.medidaMenu + 25,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Column(
+                      children: [
+                        // 🔹 Cabecera con icono + logo centrado
+                        SizedBox(
+                          height: 80, // ajusta según el tamaño del logo
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              // Icono de usuario (alineado a la izquierda)
+                              Positioned(
+                                left: 16,
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: Colors.black12,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.person,
+                                    color: Colors.black54,
+                                    size: 32,
+                                  ),
+                                ),
+                              ),
+
+                              // Logo centrado
+                              Center(
+                                child: Image.asset(
+                                  'assets/img/LogoTextMax.png',
+                                  height: 50,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // 🔹 Lista de rutas
+                        Expanded(
+                          child: ListaRutas(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         //Mapa
         GestureDetector(
           // Deshabilita gestos si está animando

@@ -12,7 +12,9 @@ import 'package:practica/config.dart';
 
 
 class MainMap extends StatefulWidget {
-  const MainMap({super.key});
+  final List<Position>? cordenadasRuta; 
+
+  const MainMap({super.key, this.cordenadasRuta});
 
   @override
   State<MainMap> createState() => _MainMapState();
@@ -21,8 +23,8 @@ class MainMap extends StatefulWidget {
 class _MainMapState extends State<MainMap> {
   CameraOptions? _cameraOptions;
   MapboxMap? _mapboxMap;
-  PointAnnotationManager? _pointAnnotationManager;
-  PolylineAnnotationManager? _polylineAnnotationManager;
+  PointAnnotationManager? _pointAnnotationManager; //Para un punto
+  PolylineAnnotationManager? _polylineAnnotationManager;// Para la linea
   PointAnnotation? _userMarker;
   PolylineAnnotation? _rutaActual;
   bool _mapReady = false;
@@ -109,12 +111,21 @@ class _MainMapState extends State<MainMap> {
 
     const String mapboxAccessToken = AppConfig.mapboxAccessToken;
 
-    final List<Position> puntosDeLaRuta = [
+    final List<Position> puntosDeLaRuta = widget.cordenadasRuta ?? [
       Position(-103.4542, 25.5428), // Plaza Mayor
       Position(-103.4285, 25.5186), // Cristo de las Noas
       Position(-103.3989, 25.5683), // Galerías Laguna
       Position(-103.3820, 25.5653), // Aeropuerto
     ];
+
+    if (puntosDeLaRuta.length < 2) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('⚠️ Se necesitan al menos 2 puntos para trazar una ruta.'),
+        ),
+      );
+      return;
+    }
 
     final String coordinatesString =
         puntosDeLaRuta.map((p) => '${p.lng},${p.lat}').join(';');
