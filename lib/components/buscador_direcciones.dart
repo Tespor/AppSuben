@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:practica/config.dart';
+import 'package:practica/config.dart';
+
 
 class Buscador extends StatelessWidget {
   final TextEditingController controller;
@@ -18,58 +20,67 @@ class Buscador extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tema = Theme.of(context).colorScheme;
     return Container(
-      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: TextField(
         onChanged: onChange,
         decoration: InputDecoration(
           filled: true,
-          fillColor: tema.surface,
+          fillColor: Colors.white,
           labelText: hintText,
           labelStyle: const TextStyle(
             color: Colors.grey,
             fontSize: 16,
             height: 1.5,
             fontWeight: FontWeight.w900,
-            fontFamily: 'Poppins',
+            //fontFamily: 'Poppins',
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(15),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24),
-            borderSide: BorderSide(color: tema.primary),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: TemaColores.primary),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(15),
             borderSide:
                 const BorderSide(color: Color.fromARGB(45, 158, 158, 158)),
           ),
-          prefixIcon: Icon(Icons.search, color: tema.primary),
+          prefixIcon: Icon(Icons.search, color: TemaColores.primary),
           contentPadding: const EdgeInsets.symmetric(vertical: 14),
         ),
         style: TextStyle(
-          color: tema.onSurface,
-          fontSize: 16,
+          color: Colors.black87,
+          fontSize: 20,
           height: 1.5,
-          fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
 }
 
-Future<void> getData() async {
-  final url = Uri.parse('http://192.168.1.12:2025/practica2/all');
+// Future<void> getData() async {
+//   final url = Uri.parse('http://192.168.1.12:2025/practica2/all');
 
-  try {
-    final response = await http.get(url);
-    print(response.body);
-  } catch (e) {
-    print("Error: $e");
-  }
-}
+//   try {
+//     final response = await http.get(url);
+//     print(response.body);
+//   } catch (e) {
+//     print("Error: $e");
+//   }
+// }
 
 /// Busca direcciones relacionadas con el texto proporcionado.
 /// Retorna una lista de mapas con el nombre y las coordenadas de cada dirección.

@@ -78,6 +78,7 @@ class _MainMap2State extends State<MainMap2> {
 
   void _onMapCreated(MapboxMap mapboxMap) {
     _mapboxMap = mapboxMap;
+    Provider.of<MapState>(context, listen: false).setMap(mapboxMap);
   }
 
   void _onMapLoaded(MapLoadedEventData data) async {
@@ -173,7 +174,7 @@ class _MainMap2State extends State<MainMap2> {
 
         }
 
-        final ByteData bytes = await rootBundle.load("assets/icons/Marker.ico");
+        final ByteData bytes = await rootBundle.load("assets/icons/MarkerParadas.png");
         final Uint8List list = bytes.buffer.asUint8List();
 
         for (var punto in paradas){
@@ -182,7 +183,7 @@ class _MainMap2State extends State<MainMap2> {
           await _pointAnnotationManager?.create(PointAnnotationOptions(
             geometry: Point(coordinates: Position(location[0], location[1])),
             image: list,
-            iconSize: 0.25,
+            iconSize: 0.1,
             textField: name,
             textOffset: [0, 1.5],
             textColor: Colors.white.value,
@@ -239,13 +240,13 @@ class _MainMap2State extends State<MainMap2> {
       //Creo el punto si no esta hecho
       if (_pointAnnotationManagerForUser == null) {
         _pointAnnotationManagerForUser = await _mapboxMap!.annotations.createPointAnnotationManager();
-        final ByteData bytes = await rootBundle.load("assets/icons/Marker.ico");
+        final ByteData bytes = await rootBundle.load("assets/icons/MarkerUbiRed.png");
         final Uint8List list = bytes.buffer.asUint8List();
 
         final options = PointAnnotationOptions(
           geometry: Point(coordinates: Position(pos.longitude, pos.latitude)),
           image: list,
-          iconSize: 0.3,
+          iconSize: 0.15,
         );
 
         _userMarker = await _pointAnnotationManagerForUser!.create(options);
@@ -289,12 +290,12 @@ class _MainMap2State extends State<MainMap2> {
     return Consumer<MapState>(
       builder: (context, mapState, child) {
         return Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-          floatingActionButton: FloatingActionButton(
-            onPressed: _centrarEnUsuario,
-            tooltip: 'Mi Ubicación',
-            child: const Icon(Icons.my_location),
-          ),
+          // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: _centrarEnUsuario,
+          //   tooltip: 'Mi Ubicación',
+          //   child: const Icon(Icons.my_location),
+          // ),
           body: _cameraOptions == null
               ? const Center(child: CircularProgressIndicator())
               : MapWidget(

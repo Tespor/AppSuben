@@ -61,6 +61,25 @@ class _WidgetBodyState extends State<WidgetBody> {
   double _targetOffset = 0; // destino de la animación
   bool _isAnimating = false;
   bool estadoMenu = false;
+  static const double sensitivity = 1.5;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Escucha los cambios en el MapState
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final mapState = Provider.of<MapState>(context, listen: false);
+      mapState.addListener(() {
+        if (mapState.coordenadasRuta.isNotEmpty && estadoMenu) {
+          // 🔹 Si hay nueva ruta y el menú está abierto, se cierra
+          _toggleMenu(false);
+        }
+      });
+    });
+  }
+
+
 
   void _toggleMenu(bool abrir) {
     setState(() {
@@ -172,15 +191,17 @@ class _WidgetBodyState extends State<WidgetBody> {
               _isAnimating
                   ? null
                   : (details) {
-                    double dx = details.globalPosition.dx - _startX;
+                    if (!estadoMenu && _startX > 40) return;
 
-                    if (dx < 0) {
-                      // deslizar hacia la izquierda
+                    double dx = (details.globalPosition.dx - _startX) * sensitivity;
+
+                    if (dx > 0 || estadoMenu) {
                       setState(() {
-                        _offsetX = (264 + dx).clamp(0.0, 264.0);
+                        _offsetX = dx.clamp(0.0, 264.0);
                         _targetOffset = _offsetX;
                       });
                     }
+
                   },
           onPanEnd:
               _isAnimating
@@ -249,3 +270,6 @@ class _WidgetBodyState extends State<WidgetBody> {
     );
   }
 }
+
+//api.nessieisreal.com/customers?key=9203847529304875
+//ad630fed3a624c48bbb7bd3a7982eb78
